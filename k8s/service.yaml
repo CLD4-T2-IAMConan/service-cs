@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: template-service
+  name: cs-service
   labels:
-    app: template-service
+    app: cs-service
 spec:
   type: ClusterIP
   selector:
-    app: template-service
+    app: cs-service
   ports:
   - port: 80
     targetPort: 8080

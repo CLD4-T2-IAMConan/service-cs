@@ -1,4 +1,4 @@
-package com.company.template.dto;
+package com.company.cs.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
