@@ -1,13 +1,11 @@
 package com.company.template.notice.dto;
 
 import com.company.template.notice.domain.Notice;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
 public class NoticeResponse {
 
     private Long id;
@@ -19,16 +17,14 @@ public class NoticeResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static NoticeResponse from(Notice notice) {
-        return NoticeResponse.builder()
-                .id(notice.getId())
-                .title(notice.getTitle())
-                .content(notice.getContent())
-                .categoryId(notice.getCategoryId())
-                .visible(notice.getVisible())
-                .pinned(notice.getPinned())
-                .createdAt(notice.getCreatedAt())
-                .updatedAt(notice.getUpdatedAt())
-                .build();
+    public NoticeResponse(Notice notice) {
+        this.id = notice.getId();
+        this.title = notice.getTitle();
+        this.content = notice.getContent();
+        this.categoryId = notice.getCategoryId();
+        this.visible = notice.getVisible();
+        this.pinned = notice.getPinned();
+        this.createdAt = notice.getCreatedAt();
+        this.updatedAt = notice.getUpdatedAt();
     }
 }

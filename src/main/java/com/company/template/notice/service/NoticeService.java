@@ -6,73 +6,80 @@ import com.company.template.notice.dto.NoticeResponse;
 import com.company.template.notice.dto.NoticeStatusRequest;
 import com.company.template.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
 
-    // 관리자: 공지 생성
-    public NoticeResponse create(NoticeRequest request) {
+    // 유저용 목록 (노출 Y만)
+    public List<NoticeResponse> getVisibleNotices() {
+        return noticeRepository.findByVisibleTrueOrderByPinnedDescCreatedAtDesc()
+                .stream()
+                .map(NoticeResponse::new)
+                .toList();
+    }
+
+    // 관리자용 목록 (전체)
+    public List<NoticeResponse> getAllNotices() {
+        return noticeRepository.findAll()
+                .stream()
+                .map(NoticeResponse::new)
+                .toList();
+    }
+
+    // 단건 조회 (공통)
+    public NoticeResponse getNotice(Long id) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("공지사항을 찾을 수 없습니다."));
+        return new NoticeResponse(notice);
+    }
+
+    // 생성
+    @Transactional
+    public void createNotice(NoticeRequest request) {
         Notice notice = Notice.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .categoryId(request.getCategoryId())
-                .visible(true)
-                .pinned(false)
+                .visible(request.getVisible())
+                .pinned(request.getPinned())
                 .build();
 
-        return NoticeResponse.from(noticeRepository.save(notice));
+        noticeRepository.save(notice);
     }
 
-    // 단건 조회 (공통)
-    @Transactional(readOnly = true)
-    public NoticeResponse getById(Long id) {
+    // 수정 (제목/내용/카테고리)
+    @Transactional
+    public void updateNotice(Long id, NoticeRequest request) {
         Notice notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("공지사항을 찾을 수 없습니다."));
-        return NoticeResponse.from(notice);
+                .orElseThrow(() -> new RuntimeException("공지사항을 찾을 수 없습니다."));
+
+        notice.update(
+                request.getTitle(),
+                request.getContent(),
+                request.getCategoryId()
+        );
     }
 
-    // 사용자용 목록 (노출된 공지만)
-    @Transactional(readOnly = true)
-    public Page<NoticeResponse> getVisibleList(Pageable pageable) {
-        return noticeRepository.findByVisibleTrue(pageable)
-                .map(NoticeResponse::from);
-    }
-
-    // 관리자용 전체 목록
-    @Transactional(readOnly = true)
-    public Page<NoticeResponse> getAdminList(Pageable pageable) {
-        return noticeRepository.findAll(pageable)
-                .map(NoticeResponse::from);
-    }
-
-    // 공지 수정
-    public NoticeResponse update(Long id, NoticeRequest request) {
+    // 노출/고정 상태 변경
+    @Transactional
+    public void updateNoticeStatus(Long id, NoticeStatusRequest request) {
         Notice notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("공지사항을 찾을 수 없습니다."));
-
-        notice.update(request.getTitle(), request.getContent(), request.getCategoryId());
-        return NoticeResponse.from(notice);
-    }
-
-    // 상태(visible/pinned) 변경
-    public NoticeResponse updateStatus(Long id, NoticeStatusRequest request) {
-        Notice notice = noticeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("공지사항을 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("공지사항을 찾을 수 없습니다."));
 
         notice.updateStatus(request.getVisible(), request.getPinned());
-        return NoticeResponse.from(notice);
     }
 
     // 삭제
-    public void delete(Long id) {
+    @Transactional
+    public void deleteNotice(Long id) {
         noticeRepository.deleteById(id);
     }
 }

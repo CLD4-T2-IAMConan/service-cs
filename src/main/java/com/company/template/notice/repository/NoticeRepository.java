@@ -1,12 +1,12 @@
 package com.company.template.notice.repository;
 
 import com.company.template.notice.domain.Notice;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
-    // 사용자용: 노출된 공지만 가져오기
-    Page<Notice> findByVisibleTrue(Pageable pageable);
+    // 유저용: visible = true 인 공지만
+    List<Notice> findByVisibleTrueOrderByPinnedDescCreatedAtDesc();
 }
