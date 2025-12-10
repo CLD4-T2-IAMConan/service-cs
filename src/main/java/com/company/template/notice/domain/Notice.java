@@ -53,6 +53,7 @@ public class Notice {
         this.updatedAt = LocalDateTime.now();
     }
 
+    // 기본 정보 수정
     public void update(String title, String content, Long categoryId) {
         this.title = title;
         this.content = content;
@@ -60,9 +61,14 @@ public class Notice {
         this.updatedAt = LocalDateTime.now();
     }
 
+    // 상태만 변경 (노출/고정)
     public void updateStatus(Boolean visible, Boolean pinned) {
-        if (visible != null) this.visible = visible;
-        if (pinned != null) this.pinned = pinned;
+        if (visible != null) {
+            this.visible = visible;
+        }
+        if (pinned != null) {
+            this.pinned = pinned;
+        }
         this.updatedAt = LocalDateTime.now();
     }
 }
