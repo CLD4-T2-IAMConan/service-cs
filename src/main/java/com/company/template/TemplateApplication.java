@@ -1,12 +1,12 @@
-package com.company.cs;
+package com.company.template;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class csApplication {
+public class TemplateApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(csApplication.class, args);
+        SpringApplication.run(TemplateApplication.class, args);
     }
 }
