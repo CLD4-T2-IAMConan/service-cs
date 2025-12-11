@@ -1,6 +1,6 @@
 package com.company.template.category.repository;
 
-import com.company.template.category.entity.Category;
+import com.company.template.category.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

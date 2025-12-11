@@ -3,7 +3,7 @@ package com.company.template.category.service;
 import com.company.template.category.dto.CategoryCreateRequest;
 import com.company.template.category.dto.CategoryResponse;
 import com.company.template.category.dto.CategoryUpdateRequest;
-import com.company.template.category.entity.Category;
+import com.company.template.category.domain.Category;
 import com.company.template.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -152,7 +152,9 @@ public class CategoryService {
                 .orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다: " + id));
 
         // 하위 카테고리가 있으면 삭제 불가
-        if (!category.getChildren().isEmpty()) {
+        // LAZY 로딩을 위해 children을 명시적으로 조회
+        List<Category> children = categoryRepository.findByParentId(id);
+        if (!children.isEmpty()) {
             throw new IllegalArgumentException("하위 카테고리가 존재하여 삭제할 수 없습니다");
         }
 

@@ -18,4 +18,21 @@ public class GuideRequest {
 
     @NotNull
     private Integer sortOrder;
+
+    // 테스트용 setter
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 }

@@ -22,4 +22,21 @@ public class FaqRequest {
     public Integer getSortOrder() {
         return sortOrder;
     }
+
+    // 테스트용 setter
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 }

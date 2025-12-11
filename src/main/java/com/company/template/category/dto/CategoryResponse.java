@@ -1,6 +1,6 @@
 package com.company.template.category.dto;
 
-import com.company.template.category.entity.Category;
+import com.company.template.category.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
