@@ -1,4 +1,4 @@
-package com.company.template.notice.domain;
+package com.company.template.cs.notice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

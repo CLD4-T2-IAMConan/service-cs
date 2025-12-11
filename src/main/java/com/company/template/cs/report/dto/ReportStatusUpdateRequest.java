@@ -6,5 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReportStatusUpdateRequest {
-    private String status; // "PENDING" or "PROCESSED"
+
+    // "PENDING" 또는 "PROCESSED"
+    private String status;
 }

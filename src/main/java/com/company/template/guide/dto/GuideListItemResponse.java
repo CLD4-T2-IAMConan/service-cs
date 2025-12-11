@@ -1,6 +1,6 @@
-package com.company.template.cs.guide.dto;
+package com.company.template.guide.dto;
 
-import com.company.template.cs.guide.domain.Guide;
+import com.company.template.guide.domain.Guide;
 import lombok.Builder;
 import lombok.Getter;
 

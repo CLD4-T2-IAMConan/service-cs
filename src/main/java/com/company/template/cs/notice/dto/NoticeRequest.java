@@ -1,4 +1,4 @@
-package com.company.template.notice.dto;
+package com.company.template.cs.notice.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,9 @@
-package com.company.template.notice.controller;
+package com.company.template.cs.notice.controller;
 
-import com.company.template.notice.dto.NoticeRequest;
-import com.company.template.notice.dto.NoticeResponse;
-import com.company.template.notice.dto.NoticeStatusRequest;
-import com.company.template.notice.service.NoticeService;
+import com.company.template.cs.notice.dto.NoticeRequest;
+import com.company.template.cs.notice.dto.NoticeResponse;
+import com.company.template.cs.notice.dto.NoticeStatusRequest;
+import com.company.template.cs.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

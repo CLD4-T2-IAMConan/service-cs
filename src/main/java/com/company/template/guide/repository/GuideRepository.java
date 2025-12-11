@@ -1,6 +1,6 @@
-package com.company.template.cs.guide.repository;
+package com.company.template.guide.repository;
 
-import com.company.template.cs.guide.domain.Guide;
+import com.company.template.guide.domain.Guide;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

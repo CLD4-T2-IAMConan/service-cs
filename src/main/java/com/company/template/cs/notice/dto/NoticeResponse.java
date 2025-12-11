@@ -1,6 +1,6 @@
-package com.company.template.notice.dto;
+package com.company.template.cs.notice.dto;
 
-import com.company.template.notice.domain.Notice;
+import com.company.template.cs.notice.domain.Notice;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

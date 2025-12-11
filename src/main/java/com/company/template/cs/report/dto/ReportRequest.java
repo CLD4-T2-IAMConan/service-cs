@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReportRequest {
+
     private Long userId;
     private String targetType;
     private Long targetId;

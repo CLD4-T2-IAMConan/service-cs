@@ -1,10 +1,10 @@
-package com.company.template.cs.guide.service;
+package com.company.template.guide.service;
 
-import com.company.template.cs.guide.domain.Guide;
-import com.company.template.cs.guide.dto.GuideListItemResponse;
-import com.company.template.cs.guide.dto.GuideRequest;
-import com.company.template.cs.guide.dto.GuideResponse;
-import com.company.template.cs.guide.repository.GuideRepository;
+import com.company.template.guide.domain.Guide;
+import com.company.template.guide.dto.GuideListItemResponse;
+import com.company.template.guide.dto.GuideRequest;
+import com.company.template.guide.dto.GuideResponse;
+import com.company.template.guide.repository.GuideRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

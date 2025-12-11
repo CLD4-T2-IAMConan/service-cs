@@ -1,12 +1,13 @@
-package com.company.template.cs.guide.controller;
+package com.company.template.guide.controller;
 
-import com.company.template.cs.guide.dto.GuideListItemResponse;
-import com.company.template.cs.guide.dto.GuideRequest;
-import com.company.template.cs.guide.dto.GuideResponse;
-import com.company.template.cs.guide.dto.GuideVisibilityRequest;
-import com.company.template.cs.guide.service.GuideService;
+import com.company.template.guide.dto.GuideListItemResponse;
+import com.company.template.guide.dto.GuideRequest;
+import com.company.template.guide.dto.GuideResponse;
+import com.company.template.guide.dto.GuideVisibilityRequest;
+import com.company.template.guide.service.GuideService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -75,7 +76,8 @@ public class GuideController {
     // 삭제
     // =========================
     @DeleteMapping("/admin/guides/{guideId}")
-    public void deleteGuide(@PathVariable Long guideId) {
+    public ResponseEntity<String> deleteGuide(@PathVariable Long guideId) {
         guideService.deleteGuide(guideId);
+        return ResponseEntity.ok("삭제되었습니다.");
     }
 }

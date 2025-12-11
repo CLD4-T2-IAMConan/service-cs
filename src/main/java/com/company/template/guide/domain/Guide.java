@@ -1,4 +1,4 @@
-package com.company.template.cs.guide.domain;
+package com.company.template.guide.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -21,7 +21,7 @@ public class Guide {
     private String title;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(nullable = false)

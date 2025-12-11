@@ -1,10 +1,10 @@
-package com.company.template.notice.service;
+package com.company.template.cs.notice.service;
 
-import com.company.template.notice.domain.Notice;
-import com.company.template.notice.dto.NoticeRequest;
-import com.company.template.notice.dto.NoticeResponse;
-import com.company.template.notice.dto.NoticeStatusRequest;
-import com.company.template.notice.repository.NoticeRepository;
+import com.company.template.cs.notice.domain.Notice;
+import com.company.template.cs.notice.dto.NoticeRequest;
+import com.company.template.cs.notice.dto.NoticeResponse;
+import com.company.template.cs.notice.dto.NoticeStatusRequest;
+import com.company.template.cs.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

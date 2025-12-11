@@ -23,7 +23,7 @@ public class FaqController {
         return faqService.getFaqs(category);
     }
 
-    // (선택) 단건 조회
+    // 단건 조회
     @GetMapping("/faqs/{id}")
     public FaqResponse getFaq(@PathVariable Long id) {
         return faqService.getFaq(id);
