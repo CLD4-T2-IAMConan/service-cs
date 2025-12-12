@@ -27,10 +27,10 @@ public class Notice {
     private Long categoryId;
 
     @Column(name = "is_visible", nullable = false)
-    private Boolean visible;
+    private Boolean visible;   // 노출 여부
 
     @Column(name = "is_pinned", nullable = false)
-    private Boolean pinned;
+    private Boolean pinned;    // 상단 고정 여부
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -44,8 +44,8 @@ public class Notice {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
-        if (visible == null) visible = true;
-        if (pinned == null) pinned = false;
+        if (visible == null) visible = true;   // 기본 노출
+        if (pinned == null) pinned = false;    // 기본 비고정
     }
 
     @PreUpdate
@@ -53,7 +53,7 @@ public class Notice {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // 기본 정보 수정
+    // 기본 정보 수정 (제목 / 내용 / 카테고리)
     public void update(String title, String content, Long categoryId) {
         this.title = title;
         this.content = content;
