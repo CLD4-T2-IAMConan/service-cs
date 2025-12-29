@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: service-cs
+  repository: ghcr.io/cld4-t2-iamconan/service-cs
   pullPolicy: IfNotPresent
   tag: "latest"
 
