@@ -1,8 +1,8 @@
 replicaCount: 2
 image:
-  repository: cs-service
+  repository: ghcr.io/cld4-t2-iamconan/service-cs
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "sha-73e243b"
 service:
   type: ClusterIP
   port: 80
