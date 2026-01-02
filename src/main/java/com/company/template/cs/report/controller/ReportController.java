@@ -5,6 +5,7 @@ import com.company.template.cs.report.dto.ReportResponse;
 import com.company.template.cs.report.dto.ReportStatusUpdateRequest;
 import com.company.template.cs.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class ReportController {
     // 관리자 - 신고 목록 조회 (필터)
     // GET /admin/reports?status=...&categoryId=...&reporterId=...&targetUserId=...
     @GetMapping("/admin/reports")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ReportResponse> getReportsForAdmin(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Long categoryId,
@@ -55,6 +57,7 @@ public class ReportController {
     // 관리자 - 신고 단일 상세 조회
     // GET /admin/reports/{report_id}
     @GetMapping("/admin/reports/{reportId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ReportResponse getReportDetailForAdmin(@PathVariable Long reportId) {
         return reportService.getReportDetailForAdmin(reportId);
     }
@@ -62,6 +65,7 @@ public class ReportController {
     // 관리자 - 신고 상태 변경
     // PATCH /admin/reports/{report_id}/status
     @PatchMapping("/admin/reports/{reportId}/status")
+    @PreAuthorize("hasRole('ADMIN')")
     public ReportResponse updateStatus(
             @PathVariable Long reportId,
             @RequestBody ReportStatusUpdateRequest request
@@ -70,6 +74,7 @@ public class ReportController {
     }
     // 관리자 - 신고 삭제
     @DeleteMapping("/admin/reports/{reportId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteReport(@PathVariable Long reportId) {
         reportService.deleteReport(reportId);
     }

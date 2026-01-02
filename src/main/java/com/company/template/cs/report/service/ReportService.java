@@ -68,7 +68,13 @@ public class ReportService {
 
         List<Report> result = reportRepository.findAll();
 
+        // Apply filters
         return result.stream()
+                .filter(r -> status == null || status.isBlank() || r.getStatus() == ReportStatus.valueOf(status))
+                .filter(r -> reporterId == null || r.getUserId().equals(reporterId))
+                .filter(r -> targetUserId == null || r.getTargetId().equals(targetUserId))
+                // Note: categoryId filtering requires adding category field to Report entity
+                // Skipping for now as Report doesn't have categoryId field
                 .map(ReportResponse::from)
                 .toList();
     }

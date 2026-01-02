@@ -5,6 +5,7 @@ import com.company.template.faq.dto.FaqResponse;
 import com.company.template.faq.dto.FaqStatusRequest;
 import com.company.template.faq.service.FaqService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,12 +34,14 @@ public class FaqController {
 
     // FAQ 생성
     @PostMapping("/admin/faqs")
+    @PreAuthorize("hasRole('ADMIN')")
     public FaqResponse createFaq(@RequestBody FaqRequest request) {
         return faqService.createFaq(request);
     }
 
     // FAQ 수정
     @PutMapping("/admin/faqs/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public FaqResponse updateFaq(@PathVariable Long id,
                                  @RequestBody FaqRequest request) {
         return faqService.updateFaq(id, request);
@@ -46,6 +49,7 @@ public class FaqController {
 
     // FAQ 노출 상태 변경
     @PatchMapping("/admin/faqs/{id}/visible")
+    @PreAuthorize("hasRole('ADMIN')")
     public void changeVisible(@PathVariable Long id,
                               @RequestBody FaqStatusRequest request) {
         faqService.changeVisible(id, request.isVisible());
@@ -53,6 +57,7 @@ public class FaqController {
 
     // FAQ 삭제
     @DeleteMapping("/admin/faqs/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteFaq(@PathVariable Long id) {
         faqService.deleteFaq(id);
     }

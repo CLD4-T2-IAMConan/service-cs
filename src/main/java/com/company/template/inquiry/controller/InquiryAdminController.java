@@ -7,6 +7,7 @@ import com.company.template.inquiry.dto.InquiryListItemResponse;
 import com.company.template.inquiry.service.InquiryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/cs")
+@PreAuthorize("hasRole('ADMIN')")
 public class InquiryAdminController {
 
     private final InquiryService inquiryService;

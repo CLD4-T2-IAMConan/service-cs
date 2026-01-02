@@ -5,6 +5,7 @@ import com.company.template.cs.notice.dto.NoticeResponse;
 import com.company.template.cs.notice.dto.NoticeStatusRequest;
 import com.company.template.cs.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class NoticeController {
 
     // 관리자 > 전체 공지 목록 조회
     @GetMapping("/admin/notices")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<NoticeResponse> getAllNotices() {
         return noticeService.getAllNotices();
     }
@@ -35,12 +37,14 @@ public class NoticeController {
 
     // 공지 생성 (관리자)
     @PostMapping("/admin/notices")
+    @PreAuthorize("hasRole('ADMIN')")
     public void createNotice(@RequestBody NoticeRequest request) {
         noticeService.createNotice(request);
     }
 
     // 공지 수정 (관리자)
     @PutMapping("/admin/notices/{noticeId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateNotice(@PathVariable Long noticeId,
                              @RequestBody NoticeRequest request) {
         noticeService.updateNotice(noticeId, request);
@@ -48,6 +52,7 @@ public class NoticeController {
 
     // 공지 노출/고정 상태 변경 (관리자)
     @PatchMapping("/admin/notices/{noticeId}/status")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateNoticeStatus(@PathVariable Long noticeId,
                                    @RequestBody NoticeStatusRequest request) {
         noticeService.updateNoticeStatus(noticeId, request);
@@ -55,6 +60,7 @@ public class NoticeController {
 
     // 공지 삭제 (관리자)
     @DeleteMapping("/admin/notices/{noticeId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteNotice(@PathVariable Long noticeId) {
         noticeService.deleteNotice(noticeId);
     }
