@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                path.startsWith("/faqs/") ||         // Public FAQs
                path.startsWith("/guides/") ||       // Public guides
                path.startsWith("/categories/") ||   // Public categories
-               path.equals("/api/health") ||
+               path.equals("/api/cs/health") ||    // Health Check (Path 기반 라우팅)
                path.startsWith("/actuator/") ||
                path.equals("/error");
     }
