@@ -45,6 +45,7 @@ public class SecurityConfig {
                                 "/faqs/**",              // FAQ 조회
                                 "/guides/**",            // 가이드 조회
                                 "/categories/**",        // 카테고리 조회
+                                "/api/cs/health",        // Health Check
                                 "/api/health",           // Health Check
                                 "/actuator/**",          // Actuator
                                 "/error"
