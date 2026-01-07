@@ -218,4 +218,124 @@ class ReportServiceTest {
         // then
         assertThat(reportRepository.findById(saved.getId())).isEmpty();
     }
+
+    @Test
+    @DisplayName("관리자용 신고 목록 조회 (필터 없음)")
+    void getReportsForAdmin() {
+        // given
+        Report report1 = Report.builder()
+                .userId(1L)
+                .targetType("USER")
+                .targetId(2L)
+                .reason("신고1")
+                .status(ReportStatus.RECEIVED)
+                .build();
+        reportRepository.save(report1);
+
+        Report report2 = Report.builder()
+                .userId(2L)
+                .targetType("TICKET")
+                .targetId(3L)
+                .reason("신고2")
+                .status(ReportStatus.IN_PROGRESS)
+                .build();
+        reportRepository.save(report2);
+
+        // when
+        List<ReportResponse> responses = reportService.getReportsForAdmin(null, null, null, null);
+
+        // then
+        assertThat(responses).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("관리자용 신고 목록 조회 (상태 필터)")
+    void getReportsForAdminByStatus() {
+        // given
+        Report report1 = Report.builder()
+                .userId(1L)
+                .targetType("USER")
+                .targetId(2L)
+                .reason("신고1")
+                .status(ReportStatus.RECEIVED)
+                .build();
+        reportRepository.save(report1);
+
+        Report report2 = Report.builder()
+                .userId(2L)
+                .targetType("TICKET")
+                .targetId(3L)
+                .reason("신고2")
+                .status(ReportStatus.IN_PROGRESS)
+                .build();
+        reportRepository.save(report2);
+
+        // when
+        List<ReportResponse> responses = reportService.getReportsForAdmin("RECEIVED", null, null, null);
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getStatus()).isEqualTo("RECEIVED");
+    }
+
+    @Test
+    @DisplayName("관리자용 신고 목록 조회 (신고자 ID 필터)")
+    void getReportsForAdminByReporterId() {
+        // given
+        Report report1 = Report.builder()
+                .userId(1L)
+                .targetType("USER")
+                .targetId(2L)
+                .reason("신고1")
+                .status(ReportStatus.RECEIVED)
+                .build();
+        reportRepository.save(report1);
+
+        Report report2 = Report.builder()
+                .userId(2L)
+                .targetType("TICKET")
+                .targetId(3L)
+                .reason("신고2")
+                .status(ReportStatus.IN_PROGRESS)
+                .build();
+        reportRepository.save(report2);
+
+        // when
+        List<ReportResponse> responses = reportService.getReportsForAdmin(null, null, 1L, null);
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getUserId()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("관리자용 신고 단건 조회 성공")
+    void getReportDetailForAdmin() {
+        // given
+        Report report = Report.builder()
+                .userId(1L)
+                .targetType("USER")
+                .targetId(2L)
+                .reason("신고 사유")
+                .status(ReportStatus.RECEIVED)
+                .build();
+        Report saved = reportRepository.save(report);
+
+        // when
+        ReportResponse response = reportService.getReportDetailForAdmin(saved.getId());
+
+        // then
+        assertThat(response.getId()).isEqualTo(saved.getId());
+        assertThat(response.getReason()).isEqualTo("신고 사유");
+        assertThat(response.getUserId()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 신고 관리자 조회 시 예외 발생")
+    void getReportDetailForAdminNonExistent() {
+        // when & then
+        assertThatThrownBy(() -> reportService.getReportDetailForAdmin(999L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("신고를 찾을 수 없습니다");
+    }
 }
