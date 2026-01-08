@@ -53,6 +53,16 @@ public class InquiryUserController {
     }
 
     /**
+     * 내 문의 상세 조회
+     * GET /cs/inquiries/{inquiry_id}
+     */
+    @GetMapping("/inquiries/{inquiryId}")
+    public InquiryDetailResponse getMyInquiryDetail(@PathVariable Long inquiryId) {
+        Long userId = getCurrentUserId();
+        return inquiryService.getMyInquiryDetail(userId, inquiryId);
+    }
+
+    /**
      * 문의 삭제 (사용자)
      * DELETE /cs/inquiries/{inquiry_id}
      */

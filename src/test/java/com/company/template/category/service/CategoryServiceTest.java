@@ -238,4 +238,113 @@ class CategoryServiceTest {
         // then
         assertThat(categoryRepository.findById(saved.getId())).isEmpty();
     }
+
+    @Test
+    @DisplayName("모든 카테고리 계층 구조 조회 성공")
+    void getAllCategoriesWithHierarchy() {
+        // given
+        Category root = Category.builder().name("전자제품").depth(1).build();
+        Category savedRoot = categoryRepository.save(root);
+
+        Category sub = Category.builder().name("스마트폰").depth(2).parent(savedRoot).build();
+        categoryRepository.save(sub);
+
+        // when
+        List<CategoryResponse> responses = categoryService.getAllCategoriesWithHierarchy();
+
+        // then
+        assertThat(responses).isNotEmpty();
+        assertThat(responses).extracting("name").contains("전자제품");
+    }
+
+    @Test
+    @DisplayName("특정 부모의 하위 카테고리 조회 성공")
+    void getCategoriesByParentId() {
+        // given
+        Category root = Category.builder().name("전자제품").depth(1).build();
+        Category savedRoot = categoryRepository.save(root);
+
+        Category sub1 = Category.builder().name("스마트폰").depth(2).parent(savedRoot).build();
+        Category sub2 = Category.builder().name("노트북").depth(2).parent(savedRoot).build();
+        categoryRepository.save(sub1);
+        categoryRepository.save(sub2);
+
+        // when
+        List<CategoryResponse> responses = categoryService.getCategoriesByParentId(savedRoot.getId());
+
+        // then
+        assertThat(responses).hasSize(2);
+        assertThat(responses).extracting("name").containsExactlyInAnyOrder("스마트폰", "노트북");
+    }
+
+    @Test
+    @DisplayName("특정 깊이의 카테고리 조회 성공")
+    void getCategoriesByDepth() {
+        // given
+        Category root = Category.builder().name("전자제품").depth(1).build();
+        categoryRepository.save(root);
+
+        Category sub = Category.builder().name("스마트폰").depth(2).parent(root).build();
+        categoryRepository.save(sub);
+
+        // when
+        List<CategoryResponse> responses = categoryService.getCategoriesByDepth(1);
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getName()).isEqualTo("전자제품");
+        assertThat(responses.get(0).getDepth()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("잘못된 깊이로 조회 시 예외 발생")
+    void getCategoriesByInvalidDepth() {
+        // when & then
+        assertThatThrownBy(() -> categoryService.getCategoriesByDepth(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("깊이는 1(대분류), 2(중분류), 3(소분류)만 가능합니다");
+
+        assertThatThrownBy(() -> categoryService.getCategoriesByDepth(4))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("깊이는 1(대분류), 2(중분류), 3(소분류)만 가능합니다");
+    }
+
+    @Test
+    @DisplayName("하위 카테고리를 부모로 설정 시 예외 발생")
+    void updateCategoryWithDescendantAsParent() {
+        // given
+        Category root = Category.builder().name("전자제품").depth(1).build();
+        Category savedRoot = categoryRepository.save(root);
+
+        Category sub = Category.builder().name("스마트폰").depth(2).parent(savedRoot).build();
+        Category savedSub = categoryRepository.save(sub);
+
+        Category subSub = Category.builder().name("갤럭시").depth(3).parent(savedSub).build();
+        Category savedSubSub = categoryRepository.save(subSub);
+
+        CategoryUpdateRequest request = new CategoryUpdateRequest("스마트폰", savedSubSub.getId());
+
+        // when & then
+        assertThatThrownBy(() -> categoryService.updateCategory(savedSub.getId(), request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("하위 카테고리를 부모로 설정할 수 없습니다");
+    }
+
+    @Test
+    @DisplayName("같은 부모 하위에 중복 이름 생성 시 예외 발생")
+    void createDuplicateSubCategory() {
+        // given
+        Category root = Category.builder().name("전자제품").depth(1).build();
+        Category savedRoot = categoryRepository.save(root);
+
+        CategoryCreateRequest request1 = new CategoryCreateRequest("스마트폰", 2, savedRoot.getId());
+        categoryService.createCategory(request1);
+
+        CategoryCreateRequest request2 = new CategoryCreateRequest("스마트폰", 2, savedRoot.getId());
+
+        // when & then
+        assertThatThrownBy(() -> categoryService.createCategory(request2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("같은 부모 하위에 동일한 이름의 카테고리가 이미 존재합니다");
+    }
 }
