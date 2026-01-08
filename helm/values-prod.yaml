@@ -5,8 +5,13 @@ image:
   tag: "sha-4e01f88"
 imagePullSecrets:
   - name: ghcr-pull-secret
+# ServiceAccount는 Terraform IRSA 모듈이 생성 (cs-sa)
+# Helm에서는 생성하지 않고 기존 것을 사용
 serviceAccount:
-  name: cs-sa
+  create: false
+  name: cs-sa # Terraform이 생성한 ServiceAccount 사용
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::061051233779:role/passit-cs-prod-irsa
 service:
   type: ClusterIP
   port: 80
@@ -33,6 +38,7 @@ ingress:
           pathType: Prefix
         - path: /api/inquiries
           pathType: Prefix
+      host: cs-service.passit.com
   tls: []
 resources:
   limits:
@@ -48,7 +54,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 database:
   enabled: true
-  host: "passit-prod-aurora-cluster.cluster-cnqmcq6uwqa3.ap-northeast-2.rds.amazonaws.com"
+  host: "passit-prod-aurora-cluster.cluster-crkykwekkr0w.ap-northeast-2.rds.amazonaws.com"
   port: 3306
   name: passit_db
   user: passit_user
@@ -60,7 +66,7 @@ livenessProbe:
   httpGet:
     path: /actuator/health/liveness
     port: 8085
-  initialDelaySeconds: 60
+  initialDelaySeconds: 180
   periodSeconds: 10
   timeoutSeconds: 3
   failureThreshold: 3
@@ -68,13 +74,18 @@ readinessProbe:
   httpGet:
     path: /actuator/health/readiness
     port: 8085
-  initialDelaySeconds: 50
+  initialDelaySeconds: 120
   periodSeconds: 5
   timeoutSeconds: 3
   failureThreshold: 3
 # Valkey 설정 (ElastiCache for Valkey)
 redis:
-  host: "passit-prod-valkey-ro.q2tpkl.ng.0001.apn2.cache.amazonaws.com"
+  host: "passit-prod-valkey.ri85pe.ng.0001.apn2.cache.amazonaws.com"
   port: 6379
   password: ""
   ssl: true
+
+monitoring:
+  enabled: true
+  path: /actuator/prometheus
+  interval: 15s
