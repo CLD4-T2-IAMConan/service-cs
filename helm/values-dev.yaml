@@ -5,7 +5,7 @@ replicaCount: 2
 image:
   repository: ghcr.io/cld4-t2-iamconan/service-cs
   pullPolicy: Always
-  tag: "sha-732f465"
+  tag: "sha-6e367c2"
 imagePullSecrets:
   - name: ghcr-pull-secret
 service:
