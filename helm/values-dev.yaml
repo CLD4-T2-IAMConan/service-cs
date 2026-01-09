@@ -1,8 +1,11 @@
+# Override resource names to avoid duplication
+fullnameOverride: cs-service
+
 replicaCount: 2
 image:
   repository: ghcr.io/cld4-t2-iamconan/service-cs
   pullPolicy: Always
-  tag: "sha-83f3143"
+  tag: "sha-29e5980"
 imagePullSecrets:
   - name: ghcr-pull-secret
 service:
