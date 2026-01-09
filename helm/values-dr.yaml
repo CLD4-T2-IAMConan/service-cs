@@ -48,6 +48,12 @@ database:
 env:
   SPRING_PROFILES_ACTIVE: "prod"
   SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+startupProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8085
+  failureThreshold: 30
+  periodSeconds: 10
 livenessProbe:
   httpGet:
     path: /actuator/health/liveness
